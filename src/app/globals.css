@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Festive&family=Noto+Sans+TC:wght@200;300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +7,38 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --primary-200: #eeeaf9;
+  --primary-300: #c6b7ea;
+  --primary-400: #9d83db;
+  --primary-default: #7550cc;
+  --primary-700: #37206d;
+  --primary-850: #0d081a;
+  --secondary-pink: #ffccac;
+  --secondary-blue: #78ccde;
+  --secondary-yellow: #fff0b7;
+  --status-error: #fb5b44;
+  --status-warning: #fb9232;
+  --status-success: #12b76a;
+  --gray-white: #ffffff;
+  --gray-200: #f5f5f5;
+  --gray-300: #eeeff1;
+  --gray-400: #caccd2;
+  --gray-500: #a6aab4;
+  --gray-600: #6f7585;
+  --gray-700: #545963;
+  --gray-800: #36393f;
+  --gray-900: #1f1f1f;
+  --gray-black: #000000;
+}
+
+.primary-gradients {
+  background: linear-gradient(90deg, #53389e 0%, #7f56d9 100%);
+}
+.primary-gradietns-deep {
+  background: linear-gradient(45deg, #42307d 0%, #7f56d9 100%);
+}
+.primary-gradietns-dark {
+  background: linear-gradient(44deg, #493289 0%, #6a45c5 100%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,11 +50,10 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  min-width: 360px;
+  max-width: 512px;
+  margin: 0 auto;
+  background-color: var(--gray-200);
+  font-family: 'Festive', cursive;
+  font-family: 'Noto Sans TC', sans-serif;
 }
