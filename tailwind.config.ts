@@ -32,7 +32,8 @@ const config: Config = {
         'primary-gradients-deep':
           'linear-gradient(45deg, #42307d 0%, #7f56d9 100%)',
         'primary-gradients-dark':
-          'linear-gradient(44deg, #493289 0%, #6a45c5 100%)'
+          'linear-gradient(44deg, #493289 0%, #6a45c5 100%)',
+        'gray-gradients': 'linear-gradient(229deg, #EEEFF1 0%, #D5D6D8 100%)'
       },
       boxShadow: {
         card: '0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.10)'

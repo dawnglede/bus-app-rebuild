@@ -56,4 +56,5 @@ body {
   background-color: var(--gray-200);
   font-family: 'Festive', cursive;
   font-family: 'Noto Sans TC', sans-serif;
+  position: relative;
 }

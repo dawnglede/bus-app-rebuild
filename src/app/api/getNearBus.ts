@@ -6,6 +6,7 @@ type Payload = {
 
 export default async function getNearBus(payload: Payload) {
   const { latitude, longitude, token } = payload
+  if (!token) return
   const headers = {
     authorization: `Bearer ${token}`
   }
@@ -14,7 +15,7 @@ export default async function getNearBus(payload: Payload) {
     { method: 'GET', headers }
   )
   if (!res.ok) {
-    throw new Error('fail to fetch token')
+    throw new Error('fail to fetch bus')
   }
   return res.json()
 }

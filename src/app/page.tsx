@@ -9,6 +9,7 @@ import Location from '@/components/Location'
 import useToken from '@/hooks/useToken'
 import { useEffect } from 'react'
 import useStore from '@/store/useStore'
+import Link from 'next/link'
 
 export default function Home() {
   const { refreshToken, hasToken, token } = useToken()
@@ -22,9 +23,12 @@ export default function Home() {
       <main className='mb-[58px] mt-[24px] flex flex-col items-center gap-3'>
         <div className='relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
-            <div className='text-base font-bold leading-7 text-primary-850'>
+            <Link
+              href='/searchBus'
+              className='text-base font-bold leading-7 text-primary-850'
+            >
               公車快找
-            </div>
+            </Link>
             <div className='text-xs leading-5 text-gray-600'>
               直接輸入路線名稱獲得資訊！
             </div>
