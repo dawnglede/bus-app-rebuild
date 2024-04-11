@@ -10,6 +10,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.6",
+    "@googlemaps/markerclusterer": "^2.5.3",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@types/node": "20.4.10",
     "@types/react": "18.2.20",
@@ -35,6 +37,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.55.7",
     "@types/negotiator": "^0.6.3",
     "@types/qs": "^6.9.7",
     "eslint-config-prettier": "^9.0.0",
