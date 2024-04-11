@@ -4,22 +4,24 @@ import clockIcon from '../../public/clock-icon.svg'
 import rightArrow from '../../public/right-arrow.svg'
 import wheelChair from '../../public/wheelchair-icon.svg'
 
-type Obj = {
-  [key: string]: any
-}
-
 type Type = 'history' | 'result'
 
 export default function SearchList({
   data,
-  type
+  type,
+  city
 }: {
-  data: Array<Obj>
-  type: Type
+  data: Array<{[key: string]: any}>|null
+  type: Type,
+  city: string
 }) {
+  const hasLowFloor = (stop: {[key: string]: any}) => {
+    const { TimeTables = [] } = stop
+    return TimeTables[0]?.IsLowFloor === true
+  }
   return (
     <div>
-      {type === 'result' && (!data || data?.length === 0) && (
+      {type === 'result' && data?.length === 0 && (
         <div className='mt-[22px] flex w-[100%] justify-center text-center text-base leading-7 text-gray-600'>
           唉呀!查無結果
           <br />
@@ -35,7 +37,7 @@ export default function SearchList({
             <div className='flex'>
               <div className='flex h-[24px] w-[24px] items-center justify-center'>
                 {type === 'history' && <Image src={clockIcon} alt='' />}
-                {type === 'result' && stop.accessible && (
+                {type === 'result' && hasLowFloor(stop) && (
                   <Image src={wheelChair} alt='accessible-bus' />
                 )}
               </div>
@@ -44,13 +46,13 @@ export default function SearchList({
                   {stop.RouteName.Zh_tw}
                 </div>
                 <div className='text-xs leading-5 text-gray-600'>
-                  <span>{stop.start}</span> - <span>{stop.end}</span>
+                  <span>{stop.DepartureStopNameZh}</span> - <span>{stop.DestinationStopNameZh}</span>
                 </div>
               </div>
             </div>
             <div className='flex items-center justify-center'>
               <span className='text-xs leading-5 text-gray-600'>
-                {stop.region}
+                {city}
               </span>
               <div className='flex h-[24px] w-[24px] items-center justify-center'>
                 <Image src={rightArrow} alt='' />

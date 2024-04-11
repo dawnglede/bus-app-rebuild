@@ -3,24 +3,83 @@ import Image from 'next/image'
 import SearchIcon from '../../../public/search-icon.svg'
 import CloseIcon from '../../../public/close-style2.svg'
 import Checkbox from '@/components/Checkbox'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import SearchList from '@/components/SearchList'
 import SideMenu from '@/components/SideMenu'
+import useStore from '@/store/useStore'
+import useCityCode from '@/hooks/useCityCode'
+import getRoute from '../api/getRoute'
+import { debounce } from '@/utils/tools'
 
 export default function SearchBus() {
+  const getCityCode = useCityCode()
+  const { cityCode, token } = useStore()
   const [checked, setChecked] = useState<boolean>(false)
   const [keyword, setKeyword] = useState<string>('')
+  const [selectCity, setSelectCity] = useState<{[key: string]: string}>({})
+  const [busRoute, setBusRoute] = useState<Array<{[key: string]: any}>|null>(null)
+  const [tempBusRoute, setTempBusRoute] = useState<Array<{[key: string]: any}>|null>(null)
+  const [isFilterLowFloor, setIsFilterLowFloor] = useState<boolean>(false)
   const handleCheckStatus = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked)
+    setIsFilterLowFloor(e.target.checked)
   }
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
+  const handleSelectCityChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectCity({
+      city: e.target.value,
+      cityName: e.target.selectedOptions[0].text
+    })
+  }
+  const handleCleanInput = () => {
+    setKeyword('')
+    setBusRoute(null)
+  }
+  const getBusRoute = (payload: Array<string>) => {
+    const [token, cityName, keyword] = payload
+    setBusRoute(null)
+    getRoute({
+      token,
+      cityName,
+      keyword
+    }).then((res) => {
+      setBusRoute(res)
+      setTempBusRoute(res)
+    })
+  }
+  const handleFilterLowFloor = () => {
+    if (isFilterLowFloor) {
+      const filterRoute = busRoute ? busRoute.filter(route => {
+        const { TimeTables = [] } = route
+        return TimeTables[0]?.IsLowFloor === true
+      }) : null
+      setBusRoute(filterRoute)
+    } else {
+      setBusRoute(tempBusRoute)
+    }
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const busDataDebounce = useCallback(debounce(getBusRoute, 3000), [])
+  useEffect(() => {
+    if (keyword !== '' && selectCity.city) {
+      busDataDebounce(token?.access_token, selectCity.city, keyword)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, selectCity.city])
+  useEffect(() => {
+    handleFilterLowFloor()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFilterLowFloor])
   return (
     <div className='px-[16px]'>
       <SideMenu />
-      <select className='mb-[12px] mt-[56px] bg-[transparent] text-2xl'>
-        <option>全部縣市</option>
+      <select className='mb-[12px] mt-[56px] bg-[transparent] text-2xl' onChange={handleSelectCityChange}>
+        <option key='NONE' value=''>選擇縣市</option>
+        {cityCode?.map((city) => (
+          <option key={city.CityCode} value={city.City}>{city.CityName}</option>
+        ))}
       </select>
       <div className='relative'>
         <input
@@ -37,8 +96,9 @@ export default function SearchBus() {
         ) : (
           <Image
             alt='close'
-            className='absolute right-[18px] top-[50%] translate-y-[-50%]'
+            className='absolute right-[18px] top-[50%] translate-y-[-50%] cursor-pointer'
             src={CloseIcon}
+            onClick={handleCleanInput}
           />
         )}
       </div>
@@ -48,27 +108,17 @@ export default function SearchBus() {
         </Checkbox>
       </div>
       <div>
-        <p className='text-sm text-gray-600'>歷史搜尋</p>
-        <SearchList
-          data={
-            [
-              // {
-              //   RouteName: { Zh_tw: '8501' },
-              //   start: '義大世界',
-              //   end: '高鐵左營站',
-              //   region: '高雄',
-              //   accessible: true
-              // },
-              // {
-              //   RouteName: { Zh_tw: '紅1(延駛中鋼公司)' },
-              //   start: '義大世界',
-              //   end: '高鐵左營站',
-              //   region: '高雄',
-              //   accessible: false
-              // }
-            ]
+        <p className='text-sm text-gray-600'>
+          {
+            busRoute && busRoute.length > 0
+              ? '搜尋結果'
+              : '歷史搜尋'
           }
-          type='history'
+        </p>
+        <SearchList
+          data={busRoute}
+          type='result'
+          city={selectCity.cityName}
         />
       </div>
     </div>

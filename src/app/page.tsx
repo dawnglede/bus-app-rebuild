@@ -10,31 +10,29 @@ import useToken from '@/hooks/useToken'
 import { useEffect } from 'react'
 import useStore from '@/store/useStore'
 import Link from 'next/link'
+import useCityCode from '@/hooks/useCityCode'
 
 export default function Home() {
-  const { refreshToken, hasToken, token } = useToken()
-  const { updateToken } = useStore()
-  useEffect(() => {
-    if (hasToken && token) updateToken(token)
-  }, [hasToken])
+  // useEffect(() => {
+  //   if (hasToken && token) updateToken(token)
+  // }, [hasToken])
   return (
     <>
       <NavBar />
       <main className='mb-[58px] mt-[24px] flex flex-col items-center gap-3'>
-        <div className='relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
+        <Link href='/searchBus' className='block relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
-            <Link
-              href='/searchBus'
+            <div
               className='text-base font-bold leading-7 text-primary-850'
             >
               公車快找
-            </Link>
+            </div>
             <div className='text-xs leading-5 text-gray-600'>
               直接輸入路線名稱獲得資訊！
             </div>
             <Image src={btnIcon1} alt='' className='absolute right-0 top-0' />
           </div>
-        </div>
+        </Link>
         <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
             <div className='text-base font-bold leading-7 text-primary-850'>
@@ -58,8 +56,8 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <Location />
-      <div className='fixed bottom-0 w-full'>
+      {/* <Location /> */}
+      <div className='fixed bottom-0 w-full max-w-[512px]'>
         <div className='bottom-0 h-[36px] w-full rounded-tl-[60px] bg-primary-700 text-gray-white'></div>
       </div>
     </>

@@ -1,17 +1,13 @@
 'use client'
 
-type obj = {
-  [key: string]: any
-}
-
 export default function useSessionStorage(name: string) {
-  const getSessionData = (): obj | void => {
+  const getSessionData = () => {
     const storeItem = sessionStorage.getItem(name)
     if (storeItem) {
       return JSON.parse(storeItem)
     }
   }
-  const setSessionData = (value: string | obj): void => {
+  const setSessionData = (value: any) => {
     if (typeof value === 'object') {
       sessionStorage.setItem(name, JSON.stringify(value))
     } else {
