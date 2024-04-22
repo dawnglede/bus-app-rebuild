@@ -52,7 +52,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      {/* <Location /> */}
+      <Location />
       <div className='fixed bottom-0 w-full max-w-[512px]'>
         <div className='bottom-0 h-[36px] w-full rounded-tl-[60px] bg-primary-700 text-gray-white'></div>
       </div>
