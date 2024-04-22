@@ -1,4 +1,5 @@
 import qs from 'qs'
+import { cookies } from 'next/headers'
 export type Token = {
   access_token: string
   expires_in: number
@@ -26,5 +27,13 @@ export default async function getToken(): Promise<Token> {
     throw new Error('fail to fetch token')
   }
   const resJson = await res.json()
+  const expiredTime = Date.now() + resJson.expires_in * 1000
+  cookies().set({
+    name: 'BusAppToken',
+    value: resJson.access_token,
+    httpOnly: true,
+    maxAge: expiredTime/1000,
+    secure: true
+  })
   return resJson
 }

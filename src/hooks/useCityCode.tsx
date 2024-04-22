@@ -10,21 +10,20 @@ type CityData = {
 }
 
 export default function useCityCode() {
-  // const [cityCode, setCityCode] = useState<Array<CityData>|null>(null)
-  const { token, setCityCode, cityCode } = useStore()
+  const { setCityCode, cityCode } = useStore()
   const { setSessionData, getSessionData } = useSessionStorage('cityCode')
   useEffect(() => {
     const savedCityCode = getSessionData()
     if (savedCityCode && !cityCode) {
       setCityCode(savedCityCode)
     }
-    if (!cityCode && token?.access_token) {
-      getCityCode(token.access_token).then((res) => {
+    if (!cityCode) {
+      getCityCode().then((res) => {
         setCityCode(res)
         setSessionData(res)
       })
     }
-  }, [token.access_token, cityCode])
+  }, [cityCode])
 
   return
 }

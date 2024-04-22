@@ -6,16 +6,12 @@ import btnIcon2 from '../../public/Index-section-image01_m.svg'
 import btnIcon3 from '../../public/Index-section-image02_m.svg'
 import Image from 'next/image'
 import Location from '@/components/Location'
-import useToken from '@/hooks/useToken'
 import { useEffect } from 'react'
 import useStore from '@/store/useStore'
 import Link from 'next/link'
 import useCityCode from '@/hooks/useCityCode'
 
 export default function Home() {
-  // useEffect(() => {
-  //   if (hasToken && token) updateToken(token)
-  // }, [hasToken])
   return (
     <>
       <NavBar />

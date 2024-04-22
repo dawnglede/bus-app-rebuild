@@ -13,7 +13,7 @@ import { debounce } from '@/utils/tools'
 
 export default function SearchBus() {
   const getCityCode = useCityCode()
-  const { cityCode, token } = useStore()
+  const { cityCode } = useStore()
   const [checked, setChecked] = useState<boolean>(false)
   const [keyword, setKeyword] = useState<string>('')
   const [selectCity, setSelectCity] = useState<{[key: string]: string}>({})
@@ -38,10 +38,9 @@ export default function SearchBus() {
     setBusRoute(null)
   }
   const getBusRoute = (payload: Array<string>) => {
-    const [token, cityName, keyword] = payload
+    const [cityName, keyword] = payload
     setBusRoute(null)
     getRoute({
-      token,
       cityName,
       keyword
     }).then((res) => {
@@ -64,7 +63,7 @@ export default function SearchBus() {
   const busDataDebounce = useCallback(debounce(getBusRoute, 3000), [])
   useEffect(() => {
     if (keyword !== '' && selectCity.city) {
-      busDataDebounce(token?.access_token, selectCity.city, keyword)
+      busDataDebounce(selectCity.city, keyword)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, selectCity.city])

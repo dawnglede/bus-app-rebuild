@@ -8,7 +8,6 @@ import getNearBus from '@/app/api/getNearBus'
 export default function Location() {
   const [position, setPosition] = useState<GeolocationCoordinates>()
   const [dataSource, setDataSource] = useState<any>(null)
-  const { token } = useStore()
   useEffect(() => {
     const geolocation: Geolocation = navigator.geolocation
     let watchID: number
@@ -27,7 +26,6 @@ export default function Location() {
     const payload = {
       latitude: position?.latitude,
       longitude: position?.longitude,
-      token: token?.access_token
     }
     const data = await getNearBus(payload)
     setDataSource(data)
@@ -40,10 +38,10 @@ export default function Location() {
     })
   }
   useEffect(() => {
-    if (position && !dataSource && token) {
+    if (position && !dataSource) {
       getNearStops()
     }
-  }, [position, dataSource, token])
+  }, [position, dataSource])
   return (
     <>
       {/* <div className='flex flex-col items-center'>

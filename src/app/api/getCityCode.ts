@@ -1,15 +1,8 @@
-export default async function getCityCode(token: string | undefined) {
-  if (!token || token === '') {
-    throw new Error('token does not exist!')
-  }
-  const headers = {
-    authorizqtion: `Bearer ${token}`
-  }
-
-  const res = await fetch('https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON', { method: 'GET', headers })
+export default async function getCityCode() {
+  const res = await fetch('https://tdx.transportdata.tw/api/basic/v2/Basic/City?%24format=JSON', { method: 'GET' })
   if (!res.ok) {
     throw new Error('fail to fetch city code')
   }
 
-  return res.json()
+  return await res.json()
 }
