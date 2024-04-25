@@ -1,17 +1,23 @@
 'use client'
 import Image from 'next/image'
-import SearchIcon from '../../../public/search-icon.svg'
-import CloseIcon from '../../../public/close-style2.svg'
 import Checkbox from '@/components/Checkbox'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import SearchList from '@/components/SearchList'
 import SideMenu from '@/components/SideMenu'
 import useStore from '@/store/useStore'
 import useCityCode from '@/hooks/useCityCode'
-import getRoute from '../api/getRoute'
+import getRoute from '../../api/getRoute'
 import { debounce } from '@/utils/tools'
+import { useTranslation } from '@/app/i18n/clients'
 
-export default function SearchBus() {
+interface SearchBusProps {
+  params: {
+    locale: string
+  }
+}
+
+export default function SearchBus({ params: { locale }}: SearchBusProps) {
+  const { t } = useTranslation(locale, 'searchBus')
   const getCityCode = useCityCode()
   const { cityCode } = useStore()
   const [checked, setChecked] = useState<boolean>(false)
@@ -73,11 +79,11 @@ export default function SearchBus() {
   }, [isFilterLowFloor])
   return (
     <div className='px-[16px]'>
-      <SideMenu />
+      <SideMenu locale={locale} />
       <select className='mb-[12px] mt-[56px] bg-[transparent] text-2xl' onChange={handleSelectCityChange}>
-        <option key='NONE' value=''>選擇縣市</option>
+        <option key='NONE' value=''>{t('choose-counties-or-cities')}</option>
         {cityCode?.map((city) => (
-          <option key={city.CityCode} value={city.City}>{city.CityName}</option>
+          <option key={city.CityCode} value={city.City}>{city[locale === 'zh-TW' ? 'CityName' : 'City']}</option>
         ))}
       </select>
       <div className='relative'>
@@ -86,38 +92,41 @@ export default function SearchBus() {
           className='h-[56px] w-full rounded px-[13px] pl-[16px] shadow-md focus:outline-primary-default'
           value={keyword}
           onChange={handleInputChange}
-          placeholder='請輸入公車路線/起訖站名'
+          placeholder={t('enter-bus-route-or-stop-name')}
         />
         {keyword === '' ? (
           <div className='absolute right-[18px] top-[50%] flex h-[24px] w-[24px] translate-y-[-50%] items-center justify-center'>
-            <Image alt='search' src={SearchIcon} />
+            <Image className='w-[auto] h-[auto]' alt='search' src='/search-icon.svg' width={0} height={0}/>
           </div>
         ) : (
           <Image
             alt='close'
-            className='absolute right-[18px] top-[50%] translate-y-[-50%] cursor-pointer'
-            src={CloseIcon}
+            className='absolute right-[18px] top-[50%] translate-y-[-50%] cursor-pointer w-[auto] h-[auto]'
+            src='/close-style2.svg'
             onClick={handleCleanInput}
+            width={0}
+            height={0}
           />
         )}
       </div>
       <div className='px-[4px] py-[8px] leading-7'>
         <Checkbox checked={checked} onChange={handleCheckStatus}>
-          僅顯示提供無障礙的公車路線
+          {t('only-show-routes-that-has-low-floor')}
         </Checkbox>
       </div>
       <div>
         <p className='text-sm text-gray-600'>
           {
             busRoute && busRoute.length > 0
-              ? '搜尋結果'
-              : '歷史搜尋'
+              ? t('search-results')
+              : t('search-history')
           }
         </p>
         <SearchList
           data={busRoute}
           type='result'
           city={selectCity.cityName}
+          locale={locale}
         />
       </div>
     </div>

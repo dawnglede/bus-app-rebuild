@@ -4,21 +4,23 @@ import clockIcon from '../../public/clock-icon.svg'
 import rightArrow from '../../public/right-arrow.svg'
 import wheelChair from '../../public/wheelchair-icon.svg'
 
-type Type = 'history' | 'result'
-
 export default function SearchList({
   data,
   type,
-  city
+  city,
+  locale
 }: {
   data: Array<{[key: string]: any}>|null
-  type: Type,
-  city: string
+  type: 'history' | 'result',
+  city: string,
+  locale: string
 }) {
   const hasLowFloor = (stop: {[key: string]: any}) => {
     const { TimeTables = [] } = stop
     return TimeTables[0]?.IsLowFloor === true
   }
+  const routeLocale = locale === 'zh-TW' ? 'Zh_tw' : 'En'
+  const stopNameLocale = locale === 'zh-TW' ? 'Zh' : 'En'
   return (
     <div>
       {type === 'result' && data?.length === 0 && (
@@ -43,10 +45,10 @@ export default function SearchList({
               </div>
               <div>
                 <div className='w-[200px] overflow-hidden text-ellipsis text-sm font-bold'>
-                  {stop.RouteName.Zh_tw}
+                  {stop.RouteName[routeLocale]}
                 </div>
                 <div className='text-xs leading-5 text-gray-600'>
-                  <span>{stop.DepartureStopNameZh}</span> - <span>{stop.DestinationStopNameZh}</span>
+                  <span>{stop[`DepartureStopName${stopNameLocale}`]}</span> - <span>{stop[`DestinationStopName${stopNameLocale}`]}</span>
                 </div>
               </div>
             </div>

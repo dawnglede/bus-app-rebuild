@@ -1,46 +1,51 @@
-'use client'
-
 import NavBar from '@/components/NavBar'
-import btnIcon1 from '../../public/Index-section-image04_m.svg'
-import btnIcon2 from '../../public/Index-section-image01_m.svg'
-import btnIcon3 from '../../public/Index-section-image02_m.svg'
 import Image from 'next/image'
 import Location from '@/components/Location'
 import { useEffect } from 'react'
 import useStore from '@/store/useStore'
 import Link from 'next/link'
 import useCityCode from '@/hooks/useCityCode'
+import { Locale } from '../../../i18n-config'
+import { useTranslation } from '../i18n'
 
-export default function Home() {
+interface HomeProps {
+  params: {
+    locale: Locale
+  }
+}
+
+export default async function Home({ params: { locale }}: HomeProps) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const {t} = await useTranslation(locale)
   return (
     <>
-      <NavBar />
+      <NavBar locale={locale}/>
       <main className='mb-[58px] mt-[24px] flex flex-col items-center gap-3'>
-        <Link href='/searchBus' className='block relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
-          <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
+        <Link href={`/${locale}/searchBus`} className='block relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
+          <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card pr-[70px]'>
             <div
               className='text-base font-bold leading-7 text-primary-850'
             >
-              公車快找
+              {t('nav1')}
             </div>
             <div className='text-xs leading-5 text-gray-600'>
-              直接輸入路線名稱獲得資訊！
+              {t('nav1-desc')}
             </div>
-            <Image src={btnIcon1} alt='' className='absolute right-0 top-0' />
+            <Image src='/Index-section-image04_m.svg' alt='' className='absolute right-0 top-0 w-[auto] h-[auto]' width={0} height={0}/>
           </div>
         </Link>
         <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
             <div className='text-base font-bold leading-7 text-primary-850'>
-              查詢站牌
+              {t('nav2')}
             </div>
             <div className='text-xs leading-5 text-gray-600'>
-              附近站牌 / 公車動態及路線圖
+              {t('nav2-desc')}
             </div>
-            <Image src={btnIcon2} alt='' className='absolute right-0 top-0' />
+            <Image src='/Index-section-image01_m.svg' alt='' className='absolute right-0 top-0 w-[auto] h-[auto]' width={0} height={0}/>
           </div>
         </div>
-        <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
+        {/* <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
             <div className='text-base font-bold leading-7 text-primary-850'>
               推薦公車路線
@@ -48,11 +53,11 @@ export default function Home() {
             <div className='text-xs leading-5 text-gray-600'>
               依起點及目的地搜尋路線
             </div>
-            <Image src={btnIcon3} alt='' className='absolute right-0 top-0' />
+            <Image src='/Index-section-image02_m.svg' alt='' className='absolute right-0 top-0 w-[auto] h-[auto]' width={0} height={0}/>
           </div>
-        </div>
+        </div> */}
       </main>
-      <Location />
+      <Location locale={locale} />
       <div className='fixed bottom-0 w-full max-w-[512px]'>
         <div className='bottom-0 h-[36px] w-full rounded-tl-[60px] bg-primary-700 text-gray-white'></div>
       </div>

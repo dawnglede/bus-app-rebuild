@@ -1,0 +1,13 @@
+{
+  "websiteTitle": "Bus App",
+  "websiteSubtitle": "Taiwan Real Time Bus Searching Application",
+  "nav1": "Searching for bus route",
+  "nav1-desc": "Enter the bus number or route name to search for the bus route",
+  "nav2": "Searching for bus stop",
+  "nav2-desc": "Nearby bus stops and bus routes",
+  "location-btn": "Enable location services",
+  "location-desc1": "To provide you the best services, please enable location services",
+  "location-desc2": "We will use it to provide you with the nearest transportation information",
+  "back-to-home": "Home"
+  
+}

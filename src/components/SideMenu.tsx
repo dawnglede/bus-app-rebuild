@@ -6,11 +6,20 @@ import menuStyle from '../../public/hamburger-style.svg'
 import closeIcon from '../../public/close-style3.svg'
 import menuStyle2 from '../../public/hamburger-style2.svg'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useTranslation } from '@/app/i18n/clients'
 
-export default function SideMenu() {
+export default function SideMenu({ locale }: { locale: string }) {
+  const pathname = usePathname()
+  const { t } = useTranslation(locale)
   const [isShow, setIsShow] = useState<boolean>(false)
   const handleMenuClick = () => {
     setIsShow((prev) => !prev)
+  }
+  const changeLanPathname = (lng: string) => {
+    const splitPathname = pathname.split('/')
+    splitPathname.splice(1, 1, lng)
+    return splitPathname.join('/')
   }
   return (
     <>
@@ -44,10 +53,13 @@ export default function SideMenu() {
           <div className='absolute right-0 top-0 z-40 min-h-[475px] w-[235px] overflow-hidden rounded-bl-[180px] bg-primary-gradients'>
             <div className='absolute right-[-185px] top-[63px] h-[441px] w-[441px] rounded-full bg-[#ffffff]/10'></div>
             <ul className='absolute text-gray-white text-[20px] top-[110px] right-[40px] text-right'>
-              <Link href='/' className='block cursor-pointer mb-[40px]'>回首頁</Link>
-              <li className='cursor-pointer mb-[40px]'>公車快找</li>
-              <li className='cursor-pointer mb-[40px]'>查詢公車</li>
-              <li className='cursor-pointer mb-[40px]'>該搭哪台公車</li>
+              <Link href={`/${locale}`} className='block cursor-pointer mb-[40px]'>{t('back-to-home')}</Link>
+              <li className='cursor-pointer mb-[40px]'>{t('nav1')}</li>
+              <li className='cursor-pointer mb-[40px]'>{t('nav2')}</li>
+              <li>
+                <Link href={changeLanPathname('zh-TW')} className='cursor-pointer mb-[40px]'>中文</Link>&nbsp;|&nbsp;
+                <Link href={changeLanPathname('en')} className='cursor-pointer mb-[40px]'>English</Link>
+              </li>
             </ul>
           </div>
         </>

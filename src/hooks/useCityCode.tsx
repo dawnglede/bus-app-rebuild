@@ -16,8 +16,9 @@ export default function useCityCode() {
     const savedCityCode = getSessionData()
     if (savedCityCode && !cityCode) {
       setCityCode(savedCityCode)
+      return
     }
-    if (!cityCode) {
+    if (!cityCode && !savedCityCode) {
       getCityCode().then((res) => {
         setCityCode(res)
         setSessionData(res)
