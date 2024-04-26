@@ -57,4 +57,5 @@ body {
   font-family: 'Festive', cursive;
   font-family: 'Noto Sans TC', sans-serif;
   position: relative;
+  overflow: hidden;
 }
