@@ -1,13 +1,9 @@
 'use client'
 
 import getCityCode from '@/app/api/getCityCode'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useStore from '@/store/useStore'
 import useSessionStorage from './useSessionStorage'
-
-type CityData = {
-  [key: string]: string
-}
 
 export default function useCityCode() {
   const { setCityCode, cityCode } = useStore()
@@ -24,6 +20,7 @@ export default function useCityCode() {
         setSessionData(res)
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cityCode])
 
   return

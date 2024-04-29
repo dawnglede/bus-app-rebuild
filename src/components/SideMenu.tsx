@@ -38,10 +38,10 @@ export default function SideMenu({ locale }: { locale: string }) {
       )}
       {isShow && (
         <>
-          <div className='bg-[#000000] opacity-30 fixed top-0 left-[50%] min-w-[512px] z-20 h-[100%] translate-x-[-50%]'></div>
+          <div className='fixed left-[50%] top-0 z-20 h-[100%] min-w-[512px] translate-x-[-50%] bg-[#000000] opacity-30'></div>
           <div
             onClick={handleMenuClick}
-            className='bg-gray-gradients absolute right-0 top-0 z-50 h-[60px] w-[64px] cursor-pointer overflow-hidden rounded-bl-[60px] shadow-md z-30'
+            className='absolute right-0 top-0 z-30 z-50 h-[60px] w-[64px] cursor-pointer overflow-hidden rounded-bl-[60px] bg-gray-gradients shadow-md'
           >
             <Image src={menuStyle2} className='absolute left-0 top-0' alt='' />
             <Image
@@ -52,13 +52,29 @@ export default function SideMenu({ locale }: { locale: string }) {
           </div>
           <div className='absolute right-0 top-0 z-40 min-h-[475px] w-[235px] overflow-hidden rounded-bl-[180px] bg-primary-gradients'>
             <div className='absolute right-[-185px] top-[63px] h-[441px] w-[441px] rounded-full bg-[#ffffff]/10'></div>
-            <ul className='absolute text-gray-white text-[20px] top-[110px] right-[40px] text-right'>
-              <Link href={`/${locale}`} className='block cursor-pointer mb-[40px]'>{t('back-to-home')}</Link>
-              <li className='cursor-pointer mb-[40px]'>{t('nav1')}</li>
-              <li className='cursor-pointer mb-[40px]'>{t('nav2')}</li>
+            <ul className='absolute right-[40px] top-[110px] text-right text-[20px] text-gray-white'>
+              <Link
+                href={`/${locale}`}
+                className='mb-[40px] block cursor-pointer'
+              >
+                {t('back-to-home')}
+              </Link>
+              <li className='mb-[40px] cursor-pointer'>{t('nav1')}</li>
+              <li className='mb-[40px] cursor-pointer'>{t('nav2')}</li>
               <li>
-                <Link href={changeLanPathname('zh-TW')} className='cursor-pointer mb-[40px]'>中文</Link>&nbsp;|&nbsp;
-                <Link href={changeLanPathname('en')} className='cursor-pointer mb-[40px]'>English</Link>
+                <Link
+                  href={changeLanPathname('zh-TW')}
+                  className='mb-[40px] cursor-pointer'
+                >
+                  中文
+                </Link>
+                &nbsp;|&nbsp;
+                <Link
+                  href={changeLanPathname('en')}
+                  className='mb-[40px] cursor-pointer'
+                >
+                  English
+                </Link>
               </li>
             </ul>
           </div>

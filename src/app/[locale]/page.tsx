@@ -1,10 +1,7 @@
 import NavBar from '@/components/NavBar'
 import Image from 'next/image'
 import Location from '@/components/Location'
-import { useEffect } from 'react'
-import useStore from '@/store/useStore'
 import Link from 'next/link'
-import useCityCode from '@/hooks/useCityCode'
 import { Locale } from '../../../i18n-config'
 import { useTranslation } from '../i18n'
 
@@ -14,24 +11,31 @@ interface HomeProps {
   }
 }
 
-export default async function Home({ params: { locale }}: HomeProps) {
+export default async function Home({ params: { locale } }: HomeProps) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const {t} = await useTranslation(locale)
+  const { t } = await useTranslation(locale)
   return (
     <>
-      <NavBar locale={locale}/>
+      <NavBar locale={locale} />
       <main className='mb-[58px] mt-[24px] flex flex-col items-center gap-3'>
-        <Link href={`/${locale}/searchBus`} className='block relative h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'>
-          <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card pr-[70px]'>
-            <div
-              className='text-base font-bold leading-7 text-primary-850'
-            >
+        <Link
+          href={`/${locale}/searchBus`}
+          className='relative block h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'
+        >
+          <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] pr-[70px] shadow-card'>
+            <div className='text-base font-bold leading-7 text-primary-850'>
               {t('nav1')}
             </div>
             <div className='text-xs leading-5 text-gray-600'>
               {t('nav1-desc')}
             </div>
-            <Image src='/Index-section-image04_m.svg' alt='' className='absolute right-0 top-0 w-[auto] h-[auto]' width={0} height={0}/>
+            <Image
+              src='/Index-section-image04_m.svg'
+              alt=''
+              className='absolute right-0 top-0 h-[auto] w-[auto]'
+              width={0}
+              height={0}
+            />
           </div>
         </Link>
         <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
@@ -42,7 +46,13 @@ export default async function Home({ params: { locale }}: HomeProps) {
             <div className='text-xs leading-5 text-gray-600'>
               {t('nav2-desc')}
             </div>
-            <Image src='/Index-section-image01_m.svg' alt='' className='absolute right-0 top-0 w-[auto] h-[auto]' width={0} height={0}/>
+            <Image
+              src='/Index-section-image01_m.svg'
+              alt=''
+              className='absolute right-0 top-0 h-[auto] w-[auto]'
+              width={0}
+              height={0}
+            />
           </div>
         </div>
         {/* <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>

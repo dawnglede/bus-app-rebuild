@@ -9,7 +9,7 @@ interface NavBarProps {
 
 export default async function NavBar({ locale }: NavBarProps) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const {t} = await useTranslation(locale)
+  const { t } = await useTranslation(locale)
   return (
     <div className='relative flex h-[100px] flex-col items-end justify-center rounded-bl-[60px] bg-primary-gradients-deep pr-[24px] text-gray-200 shadow-md'>
       <Image className='absolute left-4 top-[2px]' src={headerLogo} alt='' />

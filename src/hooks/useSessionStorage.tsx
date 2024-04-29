@@ -16,6 +16,6 @@ export default function useSessionStorage(name: string) {
   }
   return {
     getSessionData,
-    setSessionData
+    setSessionData,
   }
 }

@@ -9,7 +9,7 @@ type Props = {
 export default function Checkbox({ children, checked, onChange }: Props) {
   return (
     <div className='flex items-center'>
-      <label className='relative inline-block h-[16px] w-[16px] rounded-sm border-[1px] border-primary-default cursor-pointer'>
+      <label className='relative inline-block h-[16px] w-[16px] cursor-pointer rounded-sm border-[1px] border-primary-default'>
         <input
           type='checkbox'
           className='peer hidden'

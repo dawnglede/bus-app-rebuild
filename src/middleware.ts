@@ -11,7 +11,9 @@ function getLocale(request: NextRequest) {
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(locales)
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+    locales,
+  )
 
   const locale = matchLocale(languages, locales, defaultLocale)
   return locale
@@ -27,9 +29,12 @@ export async function middleware(req: NextRequest) {
     (locale) =>
       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   )
-  
-  if ((!pathnameIsMissingLocale && hostname !== 'tds.transportdata.tw') || images.some((ext) => pathname.endsWith(ext))) {
-    return 
+
+  if (
+    (!pathnameIsMissingLocale && hostname !== 'tds.transportdata.tw') ||
+    images.some((ext) => pathname.endsWith(ext))
+  ) {
+    return
   }
 
   if (pathnameIsMissingLocale) {
@@ -45,7 +50,8 @@ export async function middleware(req: NextRequest) {
   if (hostname === 'tds.transportdata.tw') {
     if (!token) {
       const tokenData = await getToken()
-      if (tokenData) token = {name: 'BusAppToken', value: tokenData.access_token}
+      if (tokenData)
+        token = { name: 'BusAppToken', value: tokenData.access_token }
     }
     req.headers.set('Authorization', `Bearer ${token}`)
   }
@@ -53,7 +59,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)']
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|public).*)'],
 }
-
-

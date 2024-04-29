@@ -8,14 +8,14 @@ export default function SearchList({
   data,
   type,
   city,
-  locale
+  locale,
 }: {
-  data: Array<{[key: string]: any}>|null
-  type: 'history' | 'result',
-  city: string,
+  data: Array<{ [key: string]: any }> | null
+  type: 'history' | 'result'
+  city: string
   locale: string
 }) {
-  const hasLowFloor = (stop: {[key: string]: any}) => {
+  const hasLowFloor = (stop: { [key: string]: any }) => {
     const { TimeTables = [] } = stop
     return TimeTables[0]?.IsLowFloor === true
   }
@@ -48,14 +48,13 @@ export default function SearchList({
                   {stop.RouteName[routeLocale]}
                 </div>
                 <div className='text-xs leading-5 text-gray-600'>
-                  <span>{stop[`DepartureStopName${stopNameLocale}`]}</span> - <span>{stop[`DestinationStopName${stopNameLocale}`]}</span>
+                  <span>{stop[`DepartureStopName${stopNameLocale}`]}</span> -{' '}
+                  <span>{stop[`DestinationStopName${stopNameLocale}`]}</span>
                 </div>
               </div>
             </div>
             <div className='flex items-center justify-center'>
-              <span className='text-xs leading-5 text-gray-600'>
-                {city}
-              </span>
+              <span className='text-xs leading-5 text-gray-600'>{city}</span>
               <div className='flex h-[24px] w-[24px] items-center justify-center'>
                 <Image src={rightArrow} alt='' />
               </div>

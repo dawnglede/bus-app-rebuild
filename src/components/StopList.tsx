@@ -11,7 +11,7 @@ type obj = {
 
 export default function StopList({
   data,
-  refreshTimer = () => {}
+  refreshTimer = () => {},
 }: {
   data: Array<obj>
   refreshTimer: Function

@@ -24,12 +24,12 @@ export default function Location({ locale }: LocationProps) {
     setDataSource(data)
     return data
   }
-  const refreshTimer = (resetTimer: Function, stopTimer: Function) => {
-    stopTimer()
-    getNearStops().then((res) => {
-      if (res) resetTimer()
-    })
-  }
+  // const refreshTimer = (resetTimer: Function, stopTimer: Function) => {
+  //   stopTimer()
+  //   getNearStops().then((res) => {
+  //     if (res) resetTimer()
+  //   })
+  // }
   // useEffect(() => {
   //   if (position && !dataSource) {
   //     getNearStops()
@@ -37,8 +37,7 @@ export default function Location({ locale }: LocationProps) {
   // }, [position, dataSource])
   return (
     <>
-      {
-        !isLocationAllowed &&
+      {!isLocationAllowed && (
         <div className='flex flex-col items-center'>
           <div className='mb-[5px] font-bold text-primary-850'>
             {t('location-desc1')}
@@ -50,7 +49,7 @@ export default function Location({ locale }: LocationProps) {
             {t('location-btn')}
           </button>
         </div>
-      }
+      )}
       {/* {dataSource && <StopList data={dataSource} refreshTimer={refreshTimer} />} */}
     </>
   )

@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 
 export default function useTimer({ time }: { time: number }) {
@@ -27,6 +26,7 @@ export default function useTimer({ time }: { time: number }) {
     } else if (seconds === 0) {
       clearInterval(timerId)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds])
   return { seconds, stopTimer, resetTimer }
 }

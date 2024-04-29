@@ -16,15 +16,19 @@ interface SearchBusProps {
   }
 }
 
-export default function SearchBus({ params: { locale }}: SearchBusProps) {
+export default function SearchBus({ params: { locale } }: SearchBusProps) {
   const { t } = useTranslation(locale, 'searchBus')
-  const getCityCode = useCityCode()
+  useCityCode()
   const { cityCode } = useStore()
   const [checked, setChecked] = useState<boolean>(false)
   const [keyword, setKeyword] = useState<string>('')
-  const [selectCity, setSelectCity] = useState<{[key: string]: string}>({})
-  const [busRoute, setBusRoute] = useState<Array<{[key: string]: any}>|null>(null)
-  const [tempBusRoute, setTempBusRoute] = useState<Array<{[key: string]: any}>|null>(null)
+  const [selectCity, setSelectCity] = useState<{ [key: string]: string }>({})
+  const [busRoute, setBusRoute] = useState<Array<{
+    [key: string]: any
+  }> | null>(null)
+  const [tempBusRoute, setTempBusRoute] = useState<Array<{
+    [key: string]: any
+  }> | null>(null)
   const [isFilterLowFloor, setIsFilterLowFloor] = useState<boolean>(false)
   const handleCheckStatus = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked)
@@ -36,7 +40,7 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
   const handleSelectCityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectCity({
       city: e.target.value,
-      cityName: e.target.selectedOptions[0].text
+      cityName: e.target.selectedOptions[0].text,
     })
   }
   const handleCleanInput = () => {
@@ -48,7 +52,7 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
     setBusRoute(null)
     getRoute({
       cityName,
-      keyword
+      keyword,
     }).then((res) => {
       setBusRoute(res)
       setTempBusRoute(res)
@@ -56,10 +60,12 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
   }
   const handleFilterLowFloor = () => {
     if (isFilterLowFloor) {
-      const filterRoute = busRoute ? busRoute.filter(route => {
-        const { TimeTables = [] } = route
-        return TimeTables[0]?.IsLowFloor === true
-      }) : null
+      const filterRoute = busRoute
+        ? busRoute.filter((route) => {
+            const { TimeTables = [] } = route
+            return TimeTables[0]?.IsLowFloor === true
+          })
+        : null
       setBusRoute(filterRoute)
     } else {
       setBusRoute(tempBusRoute)
@@ -71,7 +77,7 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
     if (keyword !== '' && selectCity.city) {
       busDataDebounce(selectCity.city, keyword)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword, selectCity.city])
   useEffect(() => {
     handleFilterLowFloor()
@@ -80,10 +86,17 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
   return (
     <div className='px-[16px]'>
       <SideMenu locale={locale} />
-      <select className='mb-[12px] mt-[56px] bg-[transparent] text-2xl' onChange={handleSelectCityChange}>
-        <option key='NONE' value=''>{t('choose-counties-or-cities')}</option>
+      <select
+        className='mb-[12px] mt-[56px] bg-[transparent] text-2xl'
+        onChange={handleSelectCityChange}
+      >
+        <option key='NONE' value=''>
+          {t('choose-counties-or-cities')}
+        </option>
         {cityCode?.map((city) => (
-          <option key={city.CityCode} value={city.City}>{city[locale === 'zh-TW' ? 'CityName' : 'City']}</option>
+          <option key={city.CityCode} value={city.City}>
+            {city[locale === 'zh-TW' ? 'CityName' : 'City']}
+          </option>
         ))}
       </select>
       <div className='relative'>
@@ -96,12 +109,18 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
         />
         {keyword === '' ? (
           <div className='absolute right-[18px] top-[50%] flex h-[24px] w-[24px] translate-y-[-50%] items-center justify-center'>
-            <Image className='w-[auto] h-[auto]' alt='search' src='/search-icon.svg' width={0} height={0}/>
+            <Image
+              className='h-[auto] w-[auto]'
+              alt='search'
+              src='/search-icon.svg'
+              width={0}
+              height={0}
+            />
           </div>
         ) : (
           <Image
             alt='close'
-            className='absolute right-[18px] top-[50%] translate-y-[-50%] cursor-pointer w-[auto] h-[auto]'
+            className='absolute right-[18px] top-[50%] h-[auto] w-[auto] translate-y-[-50%] cursor-pointer'
             src='/close-style2.svg'
             onClick={handleCleanInput}
             width={0}
@@ -116,11 +135,9 @@ export default function SearchBus({ params: { locale }}: SearchBusProps) {
       </div>
       <div>
         <p className='text-sm text-gray-600'>
-          {
-            busRoute && busRoute.length > 0
-              ? t('search-results')
-              : t('search-history')
-          }
+          {busRoute && busRoute.length > 0
+            ? t('search-results')
+            : t('search-history')}
         </p>
         <SearchList
           data={busRoute}

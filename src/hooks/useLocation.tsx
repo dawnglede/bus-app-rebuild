@@ -11,7 +11,7 @@ export default function useLocation() {
     let watchId: number
     const watchGeoPosition = () => {
       watchId = geolocation.watchPosition((position: GeolocationPosition) =>
-          setPosition(position.coords)
+        setPosition(position.coords),
       )
     }
     if ('geolocation' in navigator) {
@@ -25,12 +25,13 @@ export default function useLocation() {
         watchGeoPosition()
         setIsLocationAllowed(true)
       } else if (result.state === 'prompt') {
-        geolocation.getCurrentPosition(() =>{})
+        geolocation.getCurrentPosition(() => {})
       } else if (result.state === 'denied') {
         setGeolocationAvailable(false)
       }
     })
     return () => geolocation.clearWatch(watchId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLocationAllowed])
   return { position, isLocationAllowed }
 }
