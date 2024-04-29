@@ -38,7 +38,7 @@ export default function SideMenu({ locale }: { locale: string }) {
       )}
       {isShow && (
         <>
-          <div className='bg-[#000000] opacity-30 fixed top-0 left-[50%] min-w-[512px] z-10 h-[100%] translate-x-[-50%]'></div>
+          <div className='bg-[#000000] opacity-30 fixed top-0 left-[50%] min-w-[512px] z-20 h-[100%] translate-x-[-50%]'></div>
           <div
             onClick={handleMenuClick}
             className='bg-gray-gradients absolute right-0 top-0 z-50 h-[60px] w-[64px] cursor-pointer overflow-hidden rounded-bl-[60px] shadow-md z-30'
