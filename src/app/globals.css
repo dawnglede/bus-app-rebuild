@@ -59,3 +59,16 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+.scroll-style::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  background: var(--gray-500);
+  border-radius: 2px;
+}
