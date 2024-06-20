@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
-import getToken from './app/api/getToken'
 import { i18n } from '../i18n-config'
 
 const defaultLocale = 'zh-TW'
@@ -22,8 +21,7 @@ function getLocale(request: NextRequest) {
 const images = ['.svg', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico']
 
 export async function middleware(req: NextRequest) {
-  const { hostname, pathname } = req.nextUrl
-  let token = req.cookies.get('BusAppToken')
+  const { pathname } = req.nextUrl
 
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) =>
@@ -31,7 +29,7 @@ export async function middleware(req: NextRequest) {
   )
 
   if (
-    (!pathnameIsMissingLocale && hostname !== 'tds.transportdata.tw') ||
+    !pathnameIsMissingLocale ||
     images.some((ext) => pathname.endsWith(ext))
   ) {
     return
@@ -45,15 +43,6 @@ export async function middleware(req: NextRequest) {
         req.url,
       ),
     )
-  }
-
-  if (hostname === 'tds.transportdata.tw') {
-    if (!token) {
-      const tokenData = await getToken()
-      if (tokenData)
-        token = { name: 'BusAppToken', value: tokenData.access_token }
-    }
-    req.headers.set('Authorization', `Bearer ${token}`)
   }
   return NextResponse.next()
 }
