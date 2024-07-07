@@ -85,7 +85,6 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
   }, [isFilterLowFloor])
   return (
     <div className='px-[16px]'>
-      <SideMenu locale={locale} />
       <select
         className='mb-[12px] mt-[56px] bg-[transparent] text-2xl'
         onChange={handleSelectCityChange}
