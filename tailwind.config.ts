@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import tailwindcss3d from 'tailwindcss-3d'
 
 const config: Config = {
   content: [
@@ -40,6 +41,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindcss3d],
 }
 export default config

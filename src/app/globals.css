@@ -72,3 +72,22 @@ body {
   background: var(--gray-500);
   border-radius: 2px;
 }
+
+.sheet {
+  transform: translate3d(
+    0,
+    calc(100% - var(--header-height) + var(--transform, 0px)),
+    0
+  );
+  transition: transform 200ms ease;
+  max-height: var(--max-height);
+  pointer-events: all;
+}
+
+.expanded {
+  transform: translate3d(0, var(--transfrom), 0);
+}
+
+.dragging {
+  transition: none;
+}
