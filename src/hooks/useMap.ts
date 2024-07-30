@@ -1,20 +1,21 @@
 import { useEffect } from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
 import { MarkerClusterer } from '@googlemaps/markerclusterer'
-import BusStopStartIcon from '../../public/bus-stop-start.png'
+import BusStopStartIcon from '../../public/bus-stop-start.svg'
+import BuseStopEndIcon from '../../public/bus-stop-end.svg'
+import BusStopNormalIcon from '../../public/bus-stop-normal.svg'
 
-type Location = {
-  lat: number
-  lng: number
+export type Location = {
   [key: string]: any
 }
 
 export default function useMap({
   locations,
 }: {
-  locations: Array<google.maps.LatLngLiteral>
+  locations: Array<Location & google.maps.LatLngLiteral> | []
 }) {
-  const parser = new DOMParser()
+  // const parser = new DOMParser()
+
   const loader = new Loader({
     apiKey: process.env.google_map || '',
     version: 'weekly',
@@ -32,7 +33,6 @@ export default function useMap({
     )) as google.maps.MarkerLibrary
 
     map = new Map(document.getElementById('map') as HTMLElement, {
-      // center: { lat: -34.397, lng: 150.644 },
       zoom: 16,
       center: locations[0],
       mapId: 'DEMO_MAP_ID',
@@ -40,12 +40,20 @@ export default function useMap({
       mapTypeControl: false,
       streetViewControl: false,
     })
-    const image = document.createElement('img')
-    image.src = BusStopStartIcon.src
+    const startIcon = document.createElement('img')
+    const endIcon = document.createElement('img')
+    const normalIcon = document.createElement('img')
+    endIcon.src = BuseStopEndIcon.src
+    startIcon.src = BusStopStartIcon.src
+    normalIcon.src = BusStopNormalIcon.src
     const markers = locations.map((position) => {
       const marker = new AdvancedMarkerElement({
         position,
-        content: image,
+        content: position.start
+          ? startIcon
+          : position.end
+          ? endIcon
+          : normalIcon,
       })
       return marker
     })
