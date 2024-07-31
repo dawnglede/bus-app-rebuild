@@ -42,6 +42,15 @@ const config: Config = {
       boxShadow: {
         card: '0px 4px 6px -2px rgba(16, 24, 40, 0.05), 0px 12px 16px -4px rgba(16, 24, 40, 0.10)',
       },
+      keyframes: {
+        'fade-in': {
+          '0%': { width: '10%' },
+          '100%': { width: '70%' },
+        },
+      },
+      animation: {
+        'fade-in': 'fade-in 0.5s ease-out',
+      },
     },
   },
   plugins: [tailwindcss3d],
