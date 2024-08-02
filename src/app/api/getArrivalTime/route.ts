@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 async function getValidToken(origin: string) {
   const tokenResponse = await fetch(`${origin}/api/getToken`)
   const tokenData = await tokenResponse.json()
-  // TODO: extract this function as independent function and add set cookie
+
   return tokenData.access_token
 }
 
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const { city, routeUID } = await req.json()
   try {
     res = await fetch(
-      `https://tdx.transportdata.tw/api/basic/v2/Bus/StopOfRoute/City/${city}?%24filter=RouteUID%20eq%20%27${routeUID}%27&%24top=30&%24format=JSON`,
+      `https://tdx.transportdata.tw/api/basic/v2/Bus/EstimatedTimeOfArrival/City/${city}?%24filter=RouteUID%20eq%20%27${routeUID}%27&%24top=30&%24format=JSON`,
       {
         method: 'GET',
         headers: {
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       },
     )
     if (!res.ok) {
-      throw new Error('Fail to fetch stop info, status code :' + res.status)
+      throw new Error('Fail to fetch arrival time, status code :' + res.status)
     }
     const data = await res.json()
     return NextResponse.json({ data, success: true })
