@@ -14,9 +14,8 @@ export default async function getBusStop(payload: Payload) {
       method: 'GET',
     },
   )
-  if (!res) {
+  if (!res.ok) {
     throw new Error('fail to fetch route')
   }
-
   return res.json()
 }
