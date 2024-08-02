@@ -1,10 +1,14 @@
 'use client'
-import InfoPanel from '@/components/InfoPanel'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import useMap, { Location } from '@/hooks/useMap'
 import { Drawer } from '@/components/drawer/Drawer'
-import getBusStop from '../../../api/getBusStop'
+import {
+  createStopItem,
+  sortStopInfo,
+  StopItemProps,
+  StopItem,
+} from '@/components/StopItem'
 
 type TabStyle = {
   [key: string]: string
@@ -15,219 +19,38 @@ const tabStyle: TabStyle = {
   normal: 'h-[1px] absolute bottom-0 w-full bg-primary-default opacity-30',
 }
 
-function BusTime({ last = false, time = '', coming = false, near = false }) {
-  if (time && !coming) {
-    return (
-      <span className='text-base font-bold text-primary-default'>
-        {time}
-        <span className='font-normal text-gray-600'> 分</span>
-      </span>
-    )
-  }
-  if (coming && time) {
-    return <span className='text-base text-red-100'>{time} 分</span>
-  }
-  if (near) {
-    return <span className='text-base text-red-100'>進站中</span>
-  }
-  if (last) {
-    return (
-      <span className='rounded-[4px] bg-gray-500 px-[6px] py-[6px] text-[10px] text-gray-white'>
-        末班已過
-      </span>
-    )
-  }
-}
-
-function BusLocation({ current = false, start = false, end = false }) {
-  if (current) {
-    return (
-      <div className='absolute right-1 top-[50%] flex h-full flex-col items-center translate-y-[-50%]'>
-        <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-        <span className='inline-block h-[11px] w-[11px] rounded-[50%] bg-primary-default'></span>
-        <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-      </div>
-    )
-  }
-  if (start) {
-    return (
-      <div className='absolute right-1 top-[50%] flex h-full flex-col items-center translate-y-[-50%]'>
-        <span className='bg-transparent inline-block h-[50%] w-[1px]'></span>
-        <span className='inline-block h-[11px] w-[11px] rounded-[50%] border-[1px] border-gray-400'></span>
-        <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-      </div>
-    )
-  }
-  if (end) {
-    return (
-      <div className='absolute right-1 top-[50%] flex h-full flex-col items-center translate-y-[-50%]'>
-        <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-        <span className='inline-block h-[11px] w-[11px] rounded-[50%] border-[1px] border-gray-400'></span>
-        <span className='bg-transparent inline-block h-[50%] w-[1px]'></span>
-      </div>
-    )
-  }
-  return (
-    <div className='absolute right-1 top-[50%] flex h-full flex-col items-center translate-y-[-50%]'>
-      <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-      <span className='inline-block h-[11px] w-[11px] rounded-[50%] border-[1px] border-gray-400'></span>
-      <span className='inline-block h-[50%] w-[1px] bg-gray-400'></span>
-    </div>
-  )
-}
-
-type StopItemProps = {
-  stopName: string
-  stopUID: string | number
-  busLocation?: {
-    current?: boolean
-    start?: boolean
-    end?: boolean
-  }
-  busTime?: {
-    time?: string
-    last?: boolean
-    coming?: boolean
-    near?: boolean
-  }
-}
-
-function StopItem({ items }: { items: Array<StopItemProps> | [] }) {
-  if (!items.length) return null
-  return (
-    <>
-      {/* <div className='relative flex h-[60px] gap-x-[10px] border-b-[1px] border-gray-300'>
-        <div className='flex w-[73px] items-center justify-center'>
-          <BusTime last />
-        </div>
-        <div className='flex w-full items-center text-sm'>{stopName}</div>
-        <BusLocation />
-      </div> */}
-      {items.map((item) => (
-        <div
-          key={item.stopUID}
-          className='relative flex h-[60px] gap-x-[10px] border-b-[1px] border-gray-300'
-        >
-          <div className='flex w-[73px] items-center justify-center'>
-            <BusTime {...item.busTime} />
-          </div>
-          <div className='flex w-full items-center text-sm'>
-            {item.stopName}
-          </div>
-          <BusLocation {...(item?.busLocation ?? {})} />
-        </div>
-      ))}
-    </>
-  )
-}
-
-const items = [
-  {
-    stopName: '1.高雄車站(中山路)',
-    id: 1,
-    busLocation: {
-      start: true,
-    },
-    busTime: {
-      time: '3',
-    },
-  },
-  {
-    stopName: '2.高雄車站(中山路)',
-    id: 2,
-    busTime: {
-      coming: true,
-      time: '1',
-    },
-  },
-  {
-    stopName: '3.高雄車站(中山路)',
-    id: 3,
-    busLocation: {
-      current: true,
-    },
-    busTime: {
-      near: true,
-    },
-  },
-  {
-    stopName: '4.高雄車站(中山路)',
-    id: 4,
-    busLocation: {
-      end: true,
-    },
-    busTime: {
-      time: '3',
-    },
-  },
-  {
-    stopName: '4.高雄車站(中山路)',
-    id: 5,
-    busLocation: {
-      end: true,
-    },
-    busTime: {
-      time: '3',
-    },
-  },
-  {
-    stopName: '4.高雄車站(中山路)',
-    id: 6,
-    busLocation: {
-      end: true,
-    },
-    busTime: {
-      time: '3',
-    },
-  },
-]
-
-function sortStopInfo(data: Array<any>) {
-  return data.map((stop, index) => ({
-    lat: stop.StopPosition.PositionLat,
-    lng: stop.StopPosition.PositionLon,
-    start: index === 0,
-    end: index === data.length - 1,
-  }))
-}
-
-function createStopItem(data: Array<any>) {
-  return data.map((stop, index) => ({
-    stopName: stop.StopName.Zh_tw,
-    stopUID: stop.StopUID,
-    busLocation: {
-      start: index === 0,
-      end: index === data.length - 1,
-    },
-    busTime: {},
-  }))
-}
-
-export default function Info() {
+export default function Info({ locale }: { locale: string }) {
   const [tabStatus, setTabStatus] = useState({
     left: 'active',
     right: 'normal',
   })
+  const language = locale === 'en' ? 'En' : 'Zh_tw'
   const [expanded, setExpanded] = useState(false)
-  const [departureStop, setDepartureStop] = useState<
+  const [departureStopLocation, setDepartureStopLocation] = useState<
     Array<Location & google.maps.LatLngLiteral> | []
   >([])
-  const [returningStop, setReturningStop] = useState<
+  const [returningStopLocation, setReturningStopLocation] = useState<
     Array<Location & google.maps.LatLngLiteral> | []
   >([])
-  const [departStopItem, setDepartStopItem] = useState<
+  const [departureStopInfo, setDepartureStopInfo] = useState<
     Array<StopItemProps> | []
   >([])
-  const [returningStopItem, setReturningStopItem] = useState<
+  const [returningStopInfo, setReturningStopInfo] = useState<
     Array<StopItemProps> | []
   >([])
   const [routeName, setRouteName] = useState('')
+  const [busLocation, setBusLocation] = useState<Array<Record<string, string>>>(
+    [],
+  )
   useMap({
     // locations: [
     //   { lat: 22.6273, lng: 120.3014, start: true },
     //   { lat: 21.6273, lng: 119.3014, end: true },
     // ],
-    locations: tabStatus.left === 'active' ? departureStop : returningStop,
+    locations:
+      tabStatus.left === 'active'
+        ? departureStopLocation
+        : returningStopLocation,
   })
 
   const onTabClick = (tab: string) => {
@@ -256,21 +79,44 @@ export default function Info() {
         const departure = data.data.filter(
           (item: { Direction: number }) => item.Direction === 0,
         )
-        setDepartStopItem(createStopItem(departure[0].Stops))
-        setDepartureStop(sortStopInfo(departure[0].Stops))
+        setDepartureStopInfo(createStopItem(departure[0].Stops, language))
+        setDepartureStopLocation(sortStopInfo(departure[0].Stops))
         const returning = data.data.filter(
           (item: { Direction: number }) => item.Direction === 1,
         )
-        setReturningStop(sortStopInfo(returning[0].Stops))
-        setReturningStopItem(createStopItem(returning[0].Stops))
+        setReturningStopLocation(sortStopInfo(returning[0].Stops))
+        setReturningStopInfo(createStopItem(returning[0].Stops, language))
       }
     }
-    // getBusStop({ city: 'Taipei', routeUID: 'TPE10132' }).then((res) => {
-    //   const departure = res.filter((item) => item.Direction === 0)
-    //   departure[0].Stops.map((stop) => ({lan: stop.StopPosition.PositionLat, lng: stop.StopPosition.PositionLon}))
-    // })
-    getBusStop()
+    const getBusLocation = async () => {
+      const res = await fetch(location.origin + '/api/getArrivalTime', {
+        body: JSON.stringify({ city: 'Taipei', routeUID: 'TPE10132' }),
+        method: 'POST',
+      })
+      if (res.ok) {
+        const data = (await res.json()).data
+        const departureTime: Record<string, any> = {}
+        const returningTime: Record<string, any> = {}
+        data
+          .filter((item: { Direction: number }) => item.Direction === 0)
+          .forEach((item: { StopUID: string; EstimateTime: string }) => {
+            departureTime[item.StopUID] = {
+              EstimateTime: item.EstimateTime,
+            }
+          })
+        data
+          .filter((item: { Direction: number }) => item.Direction === 1)
+          .forEach((item: { StopUID: string; EstimateTime: string }) => {
+            returningTime[item.StopUID] = {
+              EstimateTime: item.EstimateTime,
+            }
+          })
+        setBusLocation([departureTime, returningTime])
+      }
+    }
+    Promise.all([getBusStop(), getBusLocation()])
   }, [])
+
   return (
     <div>
       <div id='map' className='h-[100vh] w-full'></div>
@@ -296,7 +142,7 @@ export default function Info() {
                   }`}
                   onClick={() => onTabClick('left')}
                 >
-                  {departStopItem[0]?.stopName ?? ''}
+                  {departureStopInfo[0]?.stopName ?? ''}
                   <span className={tabStyle[tabStatus.left]}></span>
                 </div>
                 <div
@@ -306,7 +152,7 @@ export default function Info() {
                   }`}
                   onClick={() => onTabClick('right')}
                 >
-                  {returningStopItem[0]?.stopName ?? ''}
+                  {returningStopInfo[0]?.stopName ?? ''}
                   <span className={tabStyle[tabStatus.right]}></span>
                 </div>
               </div>
@@ -315,7 +161,12 @@ export default function Info() {
           <div>
             <StopItem
               items={
-                tabStatus.left === 'active' ? departStopItem : returningStopItem
+                tabStatus.left === 'active'
+                  ? departureStopInfo
+                  : returningStopInfo
+              }
+              busTime={
+                tabStatus.left === 'active' ? busLocation[0] : busLocation[1]
               }
             />
           </div>
