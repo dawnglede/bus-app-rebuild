@@ -1,5 +1,6 @@
 import qs from 'qs'
 import { cookies } from 'next/headers'
+export const dynamic = 'force-dynamic'
 export type Token = {
   access_token: string
   expires_in: number
