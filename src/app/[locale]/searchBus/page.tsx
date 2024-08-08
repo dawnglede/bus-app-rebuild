@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Checkbox from '@/components/Checkbox'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import SearchList from '@/components/SearchList'
-import SideMenu from '@/components/SideMenu'
 import useStore from '@/store/useStore'
 import useCityCode from '@/hooks/useCityCode'
 import getRoute from '../../api/getRoute'
@@ -107,7 +106,7 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
           placeholder={t('enter-bus-route-or-stop-name')}
         />
         {keyword === '' ? (
-          <div className='absolute right-[18px] top-[50%] flex h-[24px] w-[24px] translate-y-[-50%] items-center justify-center'>
+          <div className='absolute right-[18px] top-[50%] flex h-[24px] w-[24px] items-center justify-center translate-y-[-50%]'>
             <Image
               className='h-[auto] w-[auto]'
               alt='search'
@@ -119,7 +118,7 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
         ) : (
           <Image
             alt='close'
-            className='absolute right-[18px] top-[50%] h-[auto] w-[auto] translate-y-[-50%] cursor-pointer'
+            className='absolute right-[18px] top-[50%] h-[auto] w-[auto] cursor-pointer translate-y-[-50%]'
             src='/close-style2.svg'
             onClick={handleCleanInput}
             width={0}
