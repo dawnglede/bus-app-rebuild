@@ -1,19 +1,21 @@
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
+import L, { LatLngExpression } from 'leaflet'
 
 export type Location = {
   lat: number
   lng: number
-  position?: 'start' | 'end'
+  start: boolean
+  end: boolean
 }
 
 type MapProps = {
-  locations: Array<Location>
+  locations: Array<Location> | []
   type?: 'pin' | 'pinWithLine'
+  routeLine?: LatLngExpression[][]
 }
 
-export default function Map({ locations, type }: MapProps) {
+export default function Map({ locations, type, routeLine }: MapProps) {
   const center: [number, number] =
     locations.length > 0
       ? [locations[0].lat, locations[0].lng]
@@ -36,6 +38,7 @@ export default function Map({ locations, type }: MapProps) {
       zoom={13}
       scrollWheelZoom={true}
       className='h-[100vh] w-[100%]'
+      zoomControl={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -46,18 +49,18 @@ export default function Map({ locations, type }: MapProps) {
           key={index}
           position={[location.lat, location.lng]}
           icon={
-            location?.position === 'start'
+            location?.start
               ? busStopStartIcon
-              : location?.position === 'end'
+              : location?.end
               ? busStopEndIcon
               : busStopIcon
           }
         />
       ))}
-      {type === 'pinWithLine' && (
+      {type === 'pinWithLine' && routeLine && (
         <Polyline
           pathOptions={{ color: '#7550cc', weight: 2 }}
-          positions={locations.map((loc) => [loc.lat, loc.lng])}
+          positions={routeLine}
         />
       )}
     </MapContainer>
