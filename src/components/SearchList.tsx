@@ -3,6 +3,7 @@ import Image from 'next/image'
 import clockIcon from '../../public/clock-icon.svg'
 import rightArrow from '../../public/right-arrow.svg'
 import wheelChair from '../../public/wheelchair-icon.svg'
+import Link from 'next/link'
 
 export default function SearchList({
   data,
@@ -30,11 +31,12 @@ export default function SearchList({
           請重新搜尋關鍵字或切換縣市
         </div>
       )}
-      {data?.map((stop, index) => {
+      {data?.map((stop) => {
         return (
-          <div
-            key={index}
-            className='my-[6px] flex justify-between border-b-[1px] border-solid border-[#E0E0E0] py-[6px]'
+          <Link
+            href={`/${locale}/searchBus/${stop.RouteUID}?city=${stop.City}`}
+            key={stop.RouteUID}
+            className='my-[6px] flex cursor-pointer justify-between border-b-[1px] border-solid border-[#E0E0E0] py-[6px]'
           >
             <div className='flex'>
               <div className='flex h-[24px] w-[24px] items-center justify-center'>
@@ -59,7 +61,7 @@ export default function SearchList({
                 <Image src={rightArrow} alt='' />
               </div>
             </div>
-          </div>
+          </Link>
         )
       })}
     </div>
