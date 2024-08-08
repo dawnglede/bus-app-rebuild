@@ -62,7 +62,7 @@ export function Drawer({ children, expanded, header, onChange }: Props) {
       onDragEnd={handleDragEnd}
     >
       <div
-        className='pointer-events-none fixed inset-0 flex items-end justify-center overflow-hidden'
+        className='pointer-events-none fixed inset-0 z-[2000] flex items-end justify-center overflow-hidden'
         style={{ '--header-height': '200px' } as React.CSSProperties}
       >
         <Sheet expanded={expanded} header={header}>
