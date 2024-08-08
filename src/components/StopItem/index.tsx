@@ -1,3 +1,5 @@
+import { Location } from '@/components/Map'
+
 type BusTime = {
   last?: boolean
   time?: number | null
@@ -48,6 +50,11 @@ function BusTime({
       </span>
     )
   }
+  return (
+    <span className='rounded-[4px] bg-gray-500 px-[6px] py-[6px] text-[10px] text-gray-white'>
+      未發車
+    </span>
+  )
 }
 
 function BusLocation({ current = false, start = false, end = false }) {
@@ -86,17 +93,6 @@ function BusLocation({ current = false, start = false, end = false }) {
     </div>
   )
 }
-
-// {
-//   stopName: '1.高雄車站(中山路)',
-//   id: 1,
-//   busLocation: {
-//     start: true,
-//   },
-//   busTime: {
-//     time: '3',
-//   },
-// }
 
 export function StopItem({
   items,
@@ -138,13 +134,15 @@ export function StopItem({
   )
 }
 
-export function sortStopInfo(data: Array<any>) {
-  return data.map((stop, index) => ({
-    lat: stop.StopPosition.PositionLat,
-    lng: stop.StopPosition.PositionLon,
-    start: index === 0,
-    end: index === data.length - 1,
-  }))
+export function sortStopInfo(data: Array<any>): Array<Location> {
+  return data.map((stop, index) => {
+    return {
+      lat: stop.StopPosition.PositionLat,
+      lng: stop.StopPosition.PositionLon,
+      start: index === 0,
+      end: index === data.length - 1,
+    }
+  })
 }
 
 export function createStopItem(data: Array<any>, locale: string = 'Zh_tw') {
