@@ -1,12 +1,11 @@
 'use client'
 import Image from 'next/image'
 import Checkbox from '@/components/Checkbox'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import SearchList from '@/components/SearchList'
 import useStore from '@/store/useStore'
 import useCityCode from '@/hooks/useCityCode'
 import getRoute from '../../api/getRoute'
-import { debounce } from '@/utils/tools'
 import { useTranslation } from '@/app/i18n/clients'
 import { useRouter } from 'next/navigation'
 interface SearchBusProps {
@@ -82,10 +81,9 @@ export default function SearchBus({
       setBusRoute(tempBusRoute)
     }
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const busDataDebounce = useCallback(debounce(getBusRoute, 3000), [])
+
   useEffect(() => {
-    if (search && search !== '' && city && city !== '') {
+    if (search && city) {
       getBusRoute({ cityName: city, keyword: search })
       sessionStorage.setItem('search', search)
       sessionStorage.setItem('city', city)
@@ -107,6 +105,7 @@ export default function SearchBus({
       })
       router.replace(`/${locale}/searchBus?search=${search}&city=${city}`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <div className='px-[16px]'>
