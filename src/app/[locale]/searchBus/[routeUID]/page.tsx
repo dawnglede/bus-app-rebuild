@@ -62,12 +62,14 @@ export default function Info({
 
   const onTabClick = (tab: string) => {
     if (tab === 'left') {
+      if (departureStopInfo.length === 0) return
       setTabStatus({
         left: 'active',
         right: 'normal',
       })
     }
     if (tab === 'right') {
+      if (returningStopInfo.length === 0) return
       setTabStatus({
         left: 'normal',
         right: 'active',
@@ -229,26 +231,30 @@ export default function Info({
             </div>
             <div>
               <div className='flex h-[40px] w-[100%]'>
-                <div
-                  className={`relative flex w-[50%] items-center justify-center text-xs ${
-                    tabStatus.left === 'normal' &&
-                    'cursor-pointer text-gray-500'
-                  }`}
-                  onClick={() => onTabClick('left')}
-                >
-                  {departureStopInfo[0]?.stopName ?? ''}
-                  <span className={tabStyle[tabStatus.left]}></span>
-                </div>
-                <div
-                  className={`relative flex w-[50%] items-center justify-center text-xs ${
-                    tabStatus.right === 'normal' &&
-                    'cursor-pointer text-gray-500'
-                  }`}
-                  onClick={() => onTabClick('right')}
-                >
-                  {returningStopInfo[0]?.stopName ?? ''}
-                  <span className={tabStyle[tabStatus.right]}></span>
-                </div>
+                {departureStopInfo.length > 0 && (
+                  <div
+                    className={`relative flex w-full flex-1 items-center justify-center text-xs ${
+                      tabStatus.left === 'normal' &&
+                      'cursor-pointer text-gray-500'
+                    }`}
+                    onClick={() => onTabClick('left')}
+                  >
+                    {departureStopInfo[0]?.stopName ?? ''}
+                    <span className={tabStyle[tabStatus.left]}></span>
+                  </div>
+                )}
+                {returningStopInfo.length > 0 && (
+                  <div
+                    className={`relative flex w-full flex-1 items-center justify-center text-xs ${
+                      tabStatus.right === 'normal' &&
+                      'cursor-pointer text-gray-500'
+                    }`}
+                    onClick={() => onTabClick('right')}
+                  >
+                    {returningStopInfo[0]?.stopName ?? ''}
+                    <span className={tabStyle[tabStatus.right]}></span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
