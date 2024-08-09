@@ -22,15 +22,15 @@ export default function Map({ locations, type, routeLine }: MapProps) {
       : [25.033964, 121.564472]
   const busStopEndIcon = L.icon({
     iconUrl: '/bus-stop-end.svg',
-    iconAnchor: [16, 16],
+    iconAnchor: [20, 20],
   })
   const busStopStartIcon = L.icon({
     iconUrl: '/bus-stop-start.svg',
-    iconAnchor: [16, 16],
+    iconAnchor: [20, 20],
   })
   const busStopIcon = L.icon({
     iconUrl: '/bus-stop-icon.svg',
-    iconAnchor: [16, 16],
+    iconAnchor: [20, 20],
   })
   return (
     <MapContainer
