@@ -8,17 +8,22 @@ import useCityCode from '@/hooks/useCityCode'
 import getRoute from '../../api/getRoute'
 import { debounce } from '@/utils/tools'
 import { useTranslation } from '@/app/i18n/clients'
-
+import { useRouter } from 'next/navigation'
 interface SearchBusProps {
   params: {
     locale: string
   }
+  searchParams: { search: string; city: string }
 }
 
-export default function SearchBus({ params: { locale } }: SearchBusProps) {
+export default function SearchBus({
+  params: { locale },
+  searchParams: { search, city },
+}: SearchBusProps) {
   const { t } = useTranslation(locale, 'searchBus')
+  const router = useRouter()
   useCityCode()
-  const { cityCode } = useStore()
+  const { cityCode = [] } = useStore()
   const [checked, setChecked] = useState<boolean>(false)
   const [keyword, setKeyword] = useState<string>('')
   const [selectCity, setSelectCity] = useState<{ [key: string]: string }>({})
@@ -42,12 +47,19 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
       cityName: e.target.selectedOptions[0].text,
     })
   }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && keyword !== '') {
+      router.replace(
+        `/${locale}/searchBus?search=${keyword}&city=${selectCity.city}`,
+      )
+    }
+  }
   const handleCleanInput = () => {
     setKeyword('')
     setBusRoute(null)
   }
-  const getBusRoute = (payload: Array<string>) => {
-    const [cityName, keyword] = payload
+  const getBusRoute = (payload: Record<string, string>) => {
+    const { cityName, keyword } = payload
     setBusRoute(null)
     getRoute({
       cityName,
@@ -71,22 +83,37 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
     }
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const busDataDebounce = useCallback(debounce(getBusRoute, 3000), [])
+  // const busDataDebounce = useCallback(debounce(getBusRoute, 3000), [])
   useEffect(() => {
-    if (keyword !== '' && selectCity.city) {
-      busDataDebounce(selectCity.city, keyword)
+    if (search && search !== '' && city && city !== '') {
+      getBusRoute({ cityName: city, keyword: search })
+      sessionStorage.setItem('search', search)
+      sessionStorage.setItem('city', city)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, selectCity.city])
+  }, [search, city])
   useEffect(() => {
     handleFilterLowFloor()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFilterLowFloor])
+  useEffect(() => {
+    const search = sessionStorage.getItem('search')
+    const city = sessionStorage.getItem('city')
+    if (search && city) {
+      setKeyword(search)
+      setSelectCity({
+        city,
+        cityName: cityCode?.find((c) => c.City === city)?.CityName || '',
+      })
+      router.replace(`/${locale}/searchBus?search=${search}&city=${city}`)
+    }
+  }, [])
   return (
     <div className='px-[16px]'>
       <select
         className='mb-[12px] mt-[56px] bg-[transparent] text-2xl'
         onChange={handleSelectCityChange}
+        value={selectCity.city}
       >
         <option key='NONE' value=''>
           {t('choose-counties-or-cities')}
@@ -104,6 +131,7 @@ export default function SearchBus({ params: { locale } }: SearchBusProps) {
           value={keyword}
           onChange={handleInputChange}
           placeholder={t('enter-bus-route-or-stop-name')}
+          onKeyDown={handleKeyDown}
         />
         {keyword === '' ? (
           <div className='absolute right-[18px] top-[50%] flex h-[24px] w-[24px] items-center justify-center translate-y-[-50%]'>
