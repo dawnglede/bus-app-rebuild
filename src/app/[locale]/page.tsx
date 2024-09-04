@@ -38,7 +38,10 @@ export default async function Home({ params: { locale } }: HomeProps) {
             />
           </div>
         </Link>
-        <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
+        <Link
+          href={`/${locale}/searchStop`}
+          className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'
+        >
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
             <div className='text-base font-bold leading-7 text-primary-850'>
               {t('nav2')}
@@ -54,7 +57,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
               height={0}
             />
           </div>
-        </div>
+        </Link>
         {/* <div className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'>
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>
             <div className='text-base font-bold leading-7 text-primary-850'>
