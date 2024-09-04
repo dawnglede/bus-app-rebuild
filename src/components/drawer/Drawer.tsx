@@ -31,6 +31,7 @@ export function Drawer({ children, expanded, header, onChange }: Props) {
     timestamp: 0,
     velocity: 0,
   })
+  const HEIGHT = 200
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -63,9 +64,9 @@ export function Drawer({ children, expanded, header, onChange }: Props) {
     >
       <div
         className='pointer-events-none fixed inset-0 z-[2000] flex items-end justify-center overflow-hidden'
-        style={{ '--header-height': '200px' } as React.CSSProperties}
+        style={{ '--header-height': `${HEIGHT}px` } as React.CSSProperties}
       >
-        <Sheet expanded={expanded} header={header}>
+        <Sheet expanded={expanded} header={header} height={HEIGHT}>
           {children}
         </Sheet>
         <DropRegions />
