@@ -26,6 +26,8 @@ const config: Config = {
       'gray-800': '#36393f',
       'primary-850': '#0d081a',
       'red-100': '#FB5B44',
+      'primary-gradients-dark':
+        'linear-gradient(44deg, #493289 0%, #6a45c5 100%)',
     },
     fontFamily: {
       sans: ['Noto Sans TC', 'sans-serif'],
