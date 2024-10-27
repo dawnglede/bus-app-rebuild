@@ -19,7 +19,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
       <NavBar locale={locale} />
       <main className='mb-[58px] mt-[24px] flex flex-col items-center gap-3'>
         <Link
-          href={`/${locale}/searchBus`}
+          href={`/${locale}/searchBusRoute`}
           className='relative block h-[80px] w-[334px] cursor-pointer pr-[6px] pt-[9px]'
         >
           <div className='flex h-full w-full flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] pr-[70px] shadow-card'>
@@ -39,7 +39,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
           </div>
         </Link>
         <Link
-          href={`/${locale}/searchStop`}
+          href={`/${locale}/searchBusStop`}
           className='relative h-[80px] w-[334px] pr-[6px] pt-[9px]'
         >
           <div className='flex h-full w-full cursor-pointer flex-col justify-center rounded-[4px] bg-gray-white pl-[15px] shadow-card'>

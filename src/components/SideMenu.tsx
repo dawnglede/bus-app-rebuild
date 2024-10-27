@@ -38,7 +38,7 @@ export default function SideMenu({ locale }: { locale: string }) {
       )}
       {isShow && (
         <>
-          <div className='fixed left-[50%] top-0 z-[9999] h-[100%] min-w-[512px] translate-x-[-50%] bg-[#000000] opacity-30'></div>
+          <div className='fixed left-[50%] top-0 z-[9999] h-[100%] min-w-[512px] bg-[#000000] opacity-30 translate-x-[-50%]'></div>
           <div
             onClick={handleMenuClick}
             className='absolute right-0 top-0 z-[10000] h-[60px] w-[64px] cursor-pointer overflow-hidden rounded-bl-[60px] bg-gray-gradients shadow-md'
@@ -59,8 +59,18 @@ export default function SideMenu({ locale }: { locale: string }) {
               >
                 {t('back-to-home')}
               </Link>
-              <li className='mb-[40px] cursor-pointer'>{t('nav1')}</li>
-              <li className='mb-[40px] cursor-pointer'>{t('nav2')}</li>
+              <Link
+                href={`/${locale}/searchBusRoute`}
+                className='mb-[40px] block cursor-pointer'
+              >
+                {t('nav1')}
+              </Link>
+              <Link
+                href={`/${locale}/searchBusStop`}
+                className='mb-[40px] block cursor-pointer'
+              >
+                {t('nav2')}
+              </Link>
               <li>
                 <Link
                   href={changeLanPathname('zh-TW')}
