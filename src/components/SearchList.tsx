@@ -34,7 +34,7 @@ export default function SearchList({
       {data?.map((stop) => {
         return (
           <Link
-            href={`/${locale}/searchBus/${stop.RouteUID}?city=${stop.City}`}
+            href={`/${locale}/searchBusRoute/${stop.RouteUID}?city=${stop.City}`}
             key={stop.RouteUID}
             className='my-[6px] flex cursor-pointer justify-between border-b-[1px] border-solid border-[#E0E0E0] py-[6px]'
           >

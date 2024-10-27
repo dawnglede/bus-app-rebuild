@@ -8,17 +8,17 @@ import useCityCode from '@/hooks/useCityCode'
 import getRoute from '../../api/getRoute'
 import { useTranslation } from '@/app/i18n/clients'
 import { useRouter } from 'next/navigation'
-interface SearchBusProps {
+interface SearchBusRouteProps {
   params: {
     locale: string
   }
   searchParams: { search: string; city: string }
 }
 
-export default function SearchBus({
+export default function SearchBusRoute({
   params: { locale },
   searchParams: { search, city },
-}: SearchBusProps) {
+}: SearchBusRouteProps) {
   const { t } = useTranslation(locale, 'searchBus')
   const router = useRouter()
   useCityCode()
@@ -49,7 +49,7 @@ export default function SearchBus({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && keyword !== '') {
       router.replace(
-        `/${locale}/searchBus?search=${keyword}&city=${selectCity.city}`,
+        `/${locale}/searchBusRoute?search=${keyword}&city=${selectCity.city}`,
       )
     }
   }
@@ -103,7 +103,7 @@ export default function SearchBus({
         city,
         cityName: cityCode?.find((c) => c.City === city)?.CityName || '',
       })
-      router.replace(`/${locale}/searchBus?search=${search}&city=${city}`)
+      router.replace(`/${locale}/searchBusRoute?search=${search}&city=${city}`)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
